@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraud Detection Result</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #f3f6fa;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      padding: 25px;
+      width: 500px;
+      text-align: center;
+    }
+    h2 { color: #007bff; }
+    .fraud {
+      color: red;
+      font-weight: bold;
+    }
+    .non-fraud {
+      color: green;
+      font-weight: bold;
+    }
+    .risk {
+      margin-top: 10px;
+      font-size: 1.1em;
+      color: #555;
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 10px 18px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .btn:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Fraud Detection Result</h2>
+
+    <p>
+      <b>Prediction:</b>
+      <span class="{{ 'fraud' if result.fraud_prediction == 1 else 'non-fraud' }}">
+        {{ result.fraud_label }}
+      </span>
+    </p>
+
+    <p><b>Fraud Probability:</b> {{ result.fraud_probability }}%</p>
+    <p class="risk"><b>Risk Level:</b> {{ result.risk_level }}</p>
+
+    <hr>
+    <h3>Submitted Details:</h3>
+    <pre>{{ input_data | tojson(indent=2) }}</pre>
+
+    <a href="/" class="btn">🔙 Back to Form</a>
+  </div>
+
+  <!-- Include chatbot widget -->
+  {% include 'result2.html' %}
+</body>
+</html>

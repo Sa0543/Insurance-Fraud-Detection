@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CSV Analysis Results</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+        h1 { text-align: center; margin-bottom: 30px; }
+        .summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        .summary-card { padding: 20px; border-radius: 10px; text-align: center; }
+        .summary-card h3 { font-size: 36px; margin-bottom: 10px; }
+        .total { background: #e3f2fd; color: #1976d2; }
+        .fraud-count { background: #ffebee; color: #c62828; }
+        .safe-count { background: #e8f5e9; color: #2e7d32; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #667eea; color: white; position: sticky; top: 0; }
+        .fraud-row { background: #fee; }
+        .safe-row { background: #efe; }
+        .table-container { max-height: 500px; overflow-y: auto; }
+        .back-btn { display: inline-block; margin-top: 20px; padding: 12px 30px; background: #667eea; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 CSV Analysis Results</h1>
+        
+        <div class="summary">
+            <div class="summary-card total">
+                <h3>{{ total }}</h3>
+                <p>Total Claims</p>
+            </div>
+            <div class="summary-card fraud-count">
+                <h3>{{ fraudulent }}</h3>
+                <p>Fraudulent</p>
+            </div>
+            <div class="summary-card safe-count">
+                <h3>{{ non_fraudulent }}</h3>
+                <p>Non-Fraudulent</p>
+            </div>
+        </div>
+        
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fraud Label</th>
+                        <th>Probability</th>
+                        <th>Premium</th>
+                        <th>Claim</th>
+                        <th>Insurance Line</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in results %}
+                    <tr class="{% if row.FRAUD_PREDICTION == 1 %}fraud-row{% else %}safe-row{% endif %}">
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ row.FRAUD_LABEL }}</strong></td>
+                        <td>{{ row.FRAUD_PROBABILITY }}%</td>
+                        <td>${{ row.PREMIUM_AMOUNT }}</td>
+                        <td>${{ row.CLAIM_AMOUNT }}</td>
+                        <td>{{ row.INSURANCE_LINE }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <center><a href="/" class="back-btn">← Analyze Another File</a></center>
+    </div>
+</body>
+</html>
